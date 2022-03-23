@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const CONNECTION_URI = "http://localhost:27017";
+const CONNECTION_URI = "mongodb://localhost:27017/todos";
 export const connect = () => {
-  mongoose.connect(CONNECTION_URI, { useNewUrlParser: true }, () => {
+  mongoose.connect(CONNECTION_URI, () => {
     console.log("db connected");
   });
 };

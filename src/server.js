@@ -1,11 +1,14 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 import morgan from "morgan";
 import { connect } from "./util/db.js";
 import userRouter from "./resources/user/user.router.js";
 import taskRouter from "./resources/task/task.router.js";
-const app = express();
+import { signin, signup } from "./util/auth.js";
 
+dotenv.config();
+const app = express();
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,6 +16,8 @@ app.use(cors());
 app.use(morgan("dev"));
 app.disable("x-powered-by");
 
+app.use("/signup", signup);
+app.use("/signin", signin);
 app.use("/api/user", userRouter);
 app.use("/api/tasks", taskRouter);
 app.get("/", (req, res) => {
@@ -23,7 +28,7 @@ export const start = async () => {
   try {
     await connect();
     app.listen(PORT, () => {
-      console.log(`Server is listening on http://localhost/${PORT} `);
+      console.log(`Server is listening on http://localhost:${PORT} `);
     });
   } catch (err) {
     console.log(err);

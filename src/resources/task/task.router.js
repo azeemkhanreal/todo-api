@@ -1,14 +1,17 @@
 import express from "express";
 import controllers from "./task.controller.js";
 const router = express.Router();
-
-router.route("/").get(controllers.getMany);
+import { protect } from "../../util/auth.js";
+// router.get("/", controllers.getMany);
+router
+  .route("/")
+  .get(protect, controllers.getMany)
+  .post(protect, controllers.createOne);
 
 router
   .route("/:id")
-  .get(controllers.getOne)
-  .post(controllers.createOne)
-  .put(controllers.updateOne)
-  .delete(controllers.removeOne);
+  .get(protect, controllers.getOne)
+  .put(protect, controllers.updateOne)
+  .delete(protect, controllers.removeOne);
 
 export default router;
